@@ -33,5 +33,5 @@ jobs:
         env:
           TAG_NAME: ${{ github.head_ref }}
         run: |
-          git tag "${TAG_NAME}"
-          git push origin "${TAG_NAME}"
+          git tag "${TAG_NAME}/m"
+          git push origin "${TAG_NAME}/m"
