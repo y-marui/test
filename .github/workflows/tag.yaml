@@ -1,0 +1,34 @@
+on:
+  pull_request:
+    branches:
+      - main
+      - stable
+    types: [closed]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Tag release
+        if: startsWith(github.head_ref, 'release/')
+        env:
+          REF: ${{ github.head_ref }}
+        run: |
+          TAG_NAME="${REF##release/}"
+          git tag $(cat TAG_NAME)
+          git push origin $(cat TAG_NAME)
+      - name: Tag hotfix
+        if: startsWith(github.head_ref, 'hotfix/')
+        env:
+          REF: ${{ github.head_ref }}
+        run: |
+          TAG_NAME="${REF##hotfix/}"
+          git tag $(cat TAG_NAME)
+          git push origin $(cat TAG_NAME)
+      - name: Tag other
+        env:
+          TAG_NAME: ${{ github.head_ref }}
+        run: |
+          git tag $(cat TAG_NAME)
+          git push origin $(cat TAG_NAME)
