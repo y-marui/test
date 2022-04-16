@@ -11,6 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Tag release
+        id: tag-release
         if: startsWith(github.head_ref, 'release/')
         env:
           REF: ${{ github.head_ref }}
@@ -19,6 +20,7 @@ jobs:
           git tag "${TAG_NAME}"
           git push origin "${TAG_NAME}"
       - name: Tag hotfix
+        id: tag-hotfix
         if: startsWith(github.head_ref, 'hotfix/')
         env:
           REF: ${{ github.head_ref }}
@@ -27,8 +29,9 @@ jobs:
           git tag "${TAG_NAME}"
           git push origin "${TAG_NAME}"
       - name: Tag other
+        if: "!(steps.tag-release.conclusion == 'success' || steps.tag-hotfix.conclusion == 'success')"
         env:
           TAG_NAME: ${{ github.head_ref }}
         run: |
-          git tag "${TAG_NAME}"
-          git push origin "${TAG_NAME}"
+          git tag "${TAG_NAME}/m"
+          git push origin "${TAG_NAME}/m"
