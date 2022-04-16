@@ -16,19 +16,19 @@ jobs:
           REF: ${{ github.head_ref }}
         run: |
           TAG_NAME="${REF##release/}"
-          git tag "{TAG_NAME}"
-          git push origin "{TAG_NAME}"
+          git tag "${TAG_NAME}"
+          git push origin "${TAG_NAME}"
       - name: Tag hotfix
         if: startsWith(github.head_ref, 'hotfix/')
         env:
           REF: ${{ github.head_ref }}
         run: |
           TAG_NAME="${REF##hotfix/}"
-          git tag "{TAG_NAME}"
-          git push origin "{TAG_NAME}"
+          git tag "${TAG_NAME}"
+          git push origin "${TAG_NAME}"
       - name: Tag other
         env:
           TAG_NAME: ${{ github.head_ref }}
         run: |
-          git tag "{TAG_NAME}"
-          git push origin "{TAG_NAME}"
+          git tag "${TAG_NAME}"
+          git push origin "${TAG_NAME}"
